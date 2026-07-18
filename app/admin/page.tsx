@@ -7,13 +7,29 @@ function formatarPreco(preco: number) {
   return preco.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 }
 
+// Brasil não tem mais horário de verão, então o fuso de Brasília é sempre UTC-3.
+// Calculamos o início e fim do dia "de hoje" em Brasília, independente de em
+// qual fuso horário o servidor (Vercel) estiver rodando.
+function limitesDoDiaEmBrasilia() {
+  const agora = new Date();
+  const dataBrasilia = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/Sao_Paulo",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(agora); // formato "YYYY-MM-DD"
+  const [ano, mes, dia] = dataBrasilia.split("-").map(Number);
+
+  // 00:00 em Brasília equivale a 03:00 UTC
+  const inicio = new Date(Date.UTC(ano, mes - 1, dia, 3, 0, 0, 0));
+  const fim = new Date(inicio.getTime() + 24 * 60 * 60 * 1000 - 1);
+  return { inicio, fim };
+}
+
 export default async function AdminPage() {
   const supabase = createClient();
 
-  const inicioHoje = new Date();
-  inicioHoje.setHours(0, 0, 0, 0);
-  const fimHoje = new Date();
-  fimHoje.setHours(23, 59, 59, 999);
+  const { inicio: inicioHoje, fim: fimHoje } = limitesDoDiaEmBrasilia();
 
   const inicioSemana = new Date();
   inicioSemana.setDate(inicioSemana.getDate() - 7);
@@ -98,6 +114,7 @@ export default async function AdminPage() {
               <h3 className="font-h2 text-h2 opacity-90">Resumo de Hoje</h3>
               <p className="text-label text-on-surface-variant">
                 {new Date().toLocaleDateString("pt-BR", {
+                  timeZone: "America/Sao_Paulo",
                   day: "2-digit",
                   month: "long",
                   year: "numeric",
@@ -164,6 +181,7 @@ export default async function AdminPage() {
                         <td className="px-md py-5 text-body">{a.servicos?.nome ?? "—"}</td>
                         <td className="px-md py-5 text-body font-medium">
                           {new Date(a.data_hora).toLocaleString("pt-BR", {
+                            timeZone: "America/Sao_Paulo",
                             day: "2-digit",
                             month: "2-digit",
                             hour: "2-digit",
