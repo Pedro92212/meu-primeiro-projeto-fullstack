@@ -8,6 +8,28 @@ Stack: **Next.js 14 (App Router) + Tailwind CSS + Supabase**
 
 ---
 
+## Sobre o projeto
+
+Este foi meu primeiro projeto fullstack completo, construído do zero até o
+deploy em produção. O objetivo era sair da teoria e passar pela experiência
+real de desenvolvimento: planejamento, banco de dados, autenticação,
+interface, versionamento e publicação do site no ar.
+
+Ao longo do caminho, aprendi na prática:
+- Modelagem de banco de dados relacional e regras de segurança (Row Level
+  Security) no Supabase
+- Autenticação e proteção de rotas em uma aplicação Next.js
+- Versionamento de código com Git e publicação no GitHub
+- Deploy em produção na Vercel, incluindo configuração de variáveis de
+  ambiente
+- Debug de problemas reais em produção (inclusive um bug de fuso horário
+  entre o servidor e o horário de Brasília)
+
+O guia abaixo documenta o passo a passo para rodar o projeto localmente ou
+publicar sua própria versão.
+
+---
+
 ## 1. Criar o projeto no Supabase
 
 1. Acesse [supabase.com](https://supabase.com) e crie uma conta gratuita
@@ -72,6 +94,8 @@ middleware.ts               → Protege as rotas /admin (exige login)
 - Cadastro de múltiplos barbeiros (hoje o sistema assume um barbeiro só)
 - Editar/desativar serviços direto pelo painel admin (hoje isso é feito
   direto no Supabase, na tabela `servicos`)
+- Login para clientes (hoje o agendamento é feito sem conta — a ideia é
+  permitir criar uma conta para acompanhar o histórico de agendamentos)
 
 ## 6. Deploy
 
