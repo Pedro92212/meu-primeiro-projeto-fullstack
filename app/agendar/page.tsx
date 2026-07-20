@@ -103,7 +103,13 @@ function AgendarConteudo() {
         <h1 className="font-h1-mobile text-h1-mobile font-bold text-primary">
           Barbearia do Pedro
         </h1>
-        <div className="w-10 h-10 rounded-full bg-surface-container-highest border border-outline-variant" />
+        <div className="w-10 h-10 rounded-full bg-surface-container-highest border border-outline-variant overflow-hidden">
+          <img
+            src="/barbeiro-noir.png"
+            alt="Pedro, o barbeiro"
+            className="w-full h-full object-cover"
+          />
+        </div>
       </header>
 
       <div className="pt-24 px-margin-mobile max-w-md mx-auto">
